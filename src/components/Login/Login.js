@@ -1,48 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
 import "./AuthForm.css";
 import GoogleLogo from "../../Assets/Image/google.svg";
 import { useNavigate } from "react-router-dom";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "../firebase/Fire";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [Email, setEmail] = useState("")
+  const [Password, setPassword] = useState("")
+  const [
+    signInWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useSignInWithEmailAndPassword(auth);
+
+
+  const email = event => {
+    setEmail(event.target.value)
+  }
+
+  const password = event => {
+    setPassword(event.target.value)
+  }
+
+  if (user) {
+    navigate('/shop')
+  }
+
+  const handelLogin = event => {
+    event.preventDefault()
+    signInWithEmailAndPassword(Email, Password)
+  }
 
   return (
     <div className='auth-form-container '>
-      <div className='auth-form'>
-        <h1>Login</h1>
-        <form>
-          <div className='input-field'>
-            <label htmlFor='email'>Email</label>
-            <div className='input-wrapper'>
-              <input type='text' name='email' id='email' required />
+      {loading ? <p> loading... </p>
+        : <div className='auth-form'>
+          <h1>Login</h1>
+          <form onSubmit={handelLogin} >
+            <div className='input-field'>
+              <label htmlFor='email'>Email</label>
+              <div className='input-wrapper'>
+                <input onBlur={email} type='text' name='email' id='email' required />
+              </div>
             </div>
-          </div>
-          <div className='input-field'>
-            <label htmlFor='password'>Password</label>
-            <div className='input-wrapper'>
-              <input type='password' name='password' id='password' required />
+            <div className='input-field'>
+              <label htmlFor='password'>Password</label>
+              <div className='input-wrapper'>
+                <input onBlur={password} type='password' name='password' id='password' required />
+              </div>
             </div>
+            <button type='submit' className='auth-form-submit'>
+              Login
+            </button>
+          </form>
+          <p className='redirect'>
+            New to Tech Geeks?{" "}
+            <span onClick={() => navigate("/signup")}>Create New Account</span>
+          </p>
+          <div className='horizontal-divider'>
+            <div className='line-left' />
+            <p>or</p>
+            <div className='line-right' />
           </div>
-          <button type='submit' className='auth-form-submit'>
-            Login
-          </button>
-        </form>
-        <p className='redirect'>
-          New to Tech Geeks?{" "}
-          <span onClick={() => navigate("/signup")}>Create New Account</span>
-        </p>
-        <div className='horizontal-divider'>
-          <div className='line-left' />
-          <p>or</p>
-          <div className='line-right' />
+          <div className='input-wrapper'>
+            <button className='google-auth'>
+              <img src={GoogleLogo} alt='' />
+              <p> Continue with Google </p>
+            </button>
+          </div>
         </div>
-        <div className='input-wrapper'>
-          <button className='google-auth'>
-            <img src={GoogleLogo} alt='' />
-            <p> Continue with Google </p>
-          </button>
-        </div>
-      </div>
+      }
     </div>
   );
 };
