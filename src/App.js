@@ -6,6 +6,8 @@ import Header from './components/Header/Header';
 import Inventory from './components/Inventory/Inventory';
 import Login from './components/Login/Login';
 import Orders from './components/Orders/Orders';
+import Orderfrom from './components/OrdersForm/Orderfrom';
+import Requirep from './components/require/Require';
 import Shop from './components/Shop/Shop';
 import Signup from './components/Signup/Signup';
 
@@ -17,7 +19,10 @@ function App() {
         <Route path='/' element={<Shop></Shop>}></Route>
         <Route path='/shop' element={<Shop></Shop>}></Route>
         <Route path='/orders' element={<Orders></Orders>}></Route>
-        <Route path='/inventory' element={<Inventory></Inventory>}></Route>
+        <Route path='/inventory' element={
+          <Requirep> <Inventory></Inventory> </Requirep>
+        }></Route>
+        <Route path='/orders-info' element={<Requirep> <Orderfrom></Orderfrom> </Requirep>} ></Route>
         <Route path='/about' element={<About></About>}></Route>
         <Route path='/login' element={<Login></Login>} ></Route>
         <Route path='/signup' element={<Signup></Signup>} ></Route>

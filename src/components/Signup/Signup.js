@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import GoogleLogo from "../../Assets/Image/google.svg";
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from "../firebase/Fire";
@@ -37,10 +37,13 @@ const Signup = () => {
   //   );
   // }
 
-  if (user) {
-    navigate('/shop')
-  }
+  const location = useLocation()
+  let from = location.state?.from?.pathname || "/";
 
+
+  if (user) {
+    navigate(from, { replace: true })
+  }
   const signUp = event => {
     event.preventDefault()
     console.log('aaaaa');

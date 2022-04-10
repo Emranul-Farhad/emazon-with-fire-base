@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./AuthForm.css";
 import GoogleLogo from "../../Assets/Image/google.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/Fire";
 
@@ -25,8 +25,12 @@ const Login = () => {
     setPassword(event.target.value)
   }
 
+  const location = useLocation()
+  let from = location.state?.from?.pathname || "/";
+
+
   if (user) {
-    navigate('/shop')
+    navigate(from, { replace: true })
   }
 
   const handelLogin = event => {
